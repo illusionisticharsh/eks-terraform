@@ -2,7 +2,7 @@
 ## Production-Ready Amazon EKS Cluster using Terraform
 
 <p align="center">
-  <img src="images/eks-architecture.png" width="1200">
+  <img src="image/eks-architecture.png" width="1200">
 </p>
 
 ---

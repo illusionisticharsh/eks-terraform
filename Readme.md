@@ -17,7 +17,7 @@ The entire infrastructure is deployed using Infrastructure as Code (IaC) through
 
 # 🏗️ Architecture Diagram
 
-> Replace the image below with the generated architecture image.
+
 
 ```text
 Developer

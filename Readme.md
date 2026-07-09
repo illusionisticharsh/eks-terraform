@@ -1,7 +1,9 @@
 # 🚀 AWSOMEDEVOPS by Harsh Dwivedi
 ## Production-Ready Amazon EKS Cluster using Terraform
 
-![AWSOMEDEVOPS Architecture](eks-architecture.png)
+<p align="center">
+  <img src="images/architecture-diagram.png" width="1200">
+</p>
 
 ---
 

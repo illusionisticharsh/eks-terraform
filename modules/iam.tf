@@ -2,7 +2,7 @@ locals {
   cluster_name = var.cluster-name
 }
 
-resource "random_integer" "random_suffix" {
+resource "random_integer" "random_suffix" { #the generated value is stored in Terraform state and can be referenced using .result. It is commonly used to create unique names for resources such as S3 buckets, IAM roles, or EKS clusters.
   min = 1000
   max = 9999
 }

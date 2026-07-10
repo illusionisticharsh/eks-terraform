@@ -25,3 +25,12 @@ variable "private-rt-name" {}
 variable "eip-name" {}
 variable "ngw-name" {}
 variable "eks-sg" {}
+
+# EKS
+variable "is-eks-cluster-enabled" {}
+variable "cluster-version" {}
+variable "endpoint-private-access" {}
+variable "endpoint-public-access" {}
+variable "ondemand_instance_types" {
+  default = ["t3a.medium"]
+}

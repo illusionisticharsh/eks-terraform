@@ -16,3 +16,12 @@ variable "pri-subnet-count" {}
 variable "pri-cidr-block" {
   type = list(string)
 }
+variable "pri-availability-zone" {
+  type = list(string)
+}
+variable "pri-sub-name" {}
+variable "public-rt-name" {}
+variable "private-rt-name" {}
+variable "eip-name" {}
+variable "ngw-name" {}
+variable "eks-sg" {}

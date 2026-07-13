@@ -14,8 +14,8 @@ resource "aws_eks_cluster" "eks" {
 
 
   access_config {
-    authentication_mode                         = "CONFIG_MAP"
-    bootstrap_cluster_creator_admin_permissions = true
+    authentication_mode                         = "CONFIG_MAP"        #Tells EKS to use the aws-auth ConfigMap for authentication and authorization.
+    bootstrap_cluster_creator_admin_permissions = true                #This automatically grants cluster-admin permissions to the IAM user or role that creates the EKS clusterr
   }
 
   tags = {
@@ -25,16 +25,16 @@ resource "aws_eks_cluster" "eks" {
 }
 
 # OIDC Provider
-resource "aws_iam_openid_connect_provider" "eks-oidc" {
+resource "aws_iam_openid_connect_provider" "eks-oidc" {                                            #used to enable IAM Roles for Service Accounts (IRSA), allowing Kubernetes pods to securely access AWS services without storing AWS credentials
   client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [data.tls_certificate.eks-certificate.certificates[0].sha1_fingerprint]
-  url             = data.tls_certificate.eks-certificate.url
+  thumbprint_list = [data.tls_certificate.eks-certificate.certificates[0].sha1_fingerprint]        #AWS verifies the SSL certificate of the OIDC endpoint using this thumbprint.
+  url             = data.tls_certificate.eks-certificate.url                                       #The OIDC issuer URL of the EKS cluster. This URL issues JWT tokens for Kubernetes service account
 }
 
 
 # AddOns for EKS Cluster
-resource "aws_eks_addon" "eks-addons" {
-  for_each      = { for idx, addon in var.addons : idx => addon }
+resource "aws_eks_addon" "eks-addons" {                                           #EKS Add-ons are AWS-managed Kubernetes components that run inside your cluster.
+  for_each      = { for i, addon in var.addons : i => addon }
   cluster_name  = aws_eks_cluster.eks[0].name
   addon_name    = each.value.name
   addon_version = each.value.version
@@ -58,6 +58,7 @@ resource "aws_eks_node_group" "ondemand-node" {
     max_size     = var.max_capacity_on_demand
   }
 
+
   subnet_ids = [aws_subnet.private-subnet[0].id, aws_subnet.private-subnet[1].id, aws_subnet.private-subnet[2].id]
 
   instance_types = var.ondemand_instance_types
@@ -67,13 +68,9 @@ resource "aws_eks_node_group" "ondemand-node" {
   }
 
   update_config {
-    max_unavailable = 1
+    max_unavailable = 1  #only 1 node unavailable at a time during upgragredes
   }
   tags = {
-    "Name" = "${var.cluster-name}-ondemand-nodes"
-  }
-  tags_all = {
-    "kubernetes.io/cluster/${var.cluster-name}" = "owned"
     "Name" = "${var.cluster-name}-ondemand-nodes"
   }
 
@@ -92,6 +89,7 @@ resource "aws_eks_node_group" "spot-node" {
     max_size     = var.max_capacity_spot
   }
 
+
   subnet_ids = [aws_subnet.private-subnet[0].id, aws_subnet.private-subnet[1].id, aws_subnet.private-subnet[2].id]
 
   instance_types = var.spot_instance_types
@@ -102,10 +100,6 @@ resource "aws_eks_node_group" "spot-node" {
   }
   tags = {
     "Name" = "${var.cluster-name}-spot-nodes"
-  }
-  tags_all = {
-    "kubernetes.io/cluster/${var.cluster-name}" = "owned"
-    "Name" = "${var.cluster-name}-ondemand-nodes"
   }
   labels = {
     type      = "spot"

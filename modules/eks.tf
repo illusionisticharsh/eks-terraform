@@ -15,7 +15,7 @@ resource "aws_eks_cluster" "eks" {
 
   access_config {
     authentication_mode                         = "CONFIG_MAP"        #Tells EKS to use the aws-auth ConfigMap for authentication and authorization.
-    bootstrap_cluster_creator_admin_permissions = true                #This automatically grants cluster-admin permissions to the IAM user or role that creates the EKS cluster
+    bootstrap_cluster_creator_admin_permissions = true                #This automatically grants cluster-admin permissions to the IAM user or role that creates the EKS clusterr
   }
 
   tags = {
